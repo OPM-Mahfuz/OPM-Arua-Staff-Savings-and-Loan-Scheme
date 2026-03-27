@@ -262,6 +262,9 @@
     font-size: 1.6rem !important;
   }
 }
+
+
+
   </style>
 </head>
 <body>
@@ -687,7 +690,7 @@
         </section>
 
         <section id="dividends">
-          <h2>Dividends</h2>
+          <h2>Interests</h2>
           <div class="panel">
             <input id="profit" type="number" placeholder="Total SACCO Profit" />
             <button onclick="calculateDividends()" class="btn btn-primary" style="margin-top:10px;">Calculate</button>
@@ -1378,16 +1381,68 @@
       updateUI();
     });
 
-    function renderRepayments() {
-      const repayTable = document.getElementById('repayTable');
-      repayTable.innerHTML = '';
-      repayments.forEach(r => {
-        const totalBalance = loans.filter(l => l.staffID === r.staffID).reduce((a, l) => a + Number(l.balance || 0), 0);
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${r.memberName} (${r.staffID})</td><td>${money(r.amount)}</td><td>${r.paymentDate}</td><td>${r.method}</td><td>${money(totalBalance)}</td>`;
-        repayTable.appendChild(row);
-      });
-    }
+     // Add the following functions for editing/deleting repayment entries
+function editRepayment(i) {
+  const r = repayments[i];
+  if (!r) return;
+  document.getElementById('repayMember').value = r.staffID;
+  document.getElementById('repayAmount').value = r.amount;
+  document.getElementById('paymentDate').value = r.paymentDate;
+  document.getElementById('paymentMethod').value = r.method;
+  // Store index for update
+  currentRepaymentEditIdx = i;
+}
+
+function deleteRepayment(i) {
+  if (!repayments[i]) return;
+  if (!confirm('Delete this repayment record?')) return;
+  repayments.splice(i, 1);
+  log(`Deleted repayment for: ${repayments[i].memberName}`);
+  save();
+  updateUI();
+}
+
+  function renderRepayments() {
+  const tbody = document.getElementById('repayTable');
+  tbody.innerHTML = '';
+  repayments.forEach((r, i) => {
+    const totalBalance = loans.filter(l => l.staffID === r.staffID).reduce((a, l) => a + Number(l.balance || 0), 0);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${r.memberName} (${r.staffID})</td>
+      <td>${money(r.amount)}</td>
+      <td>${r.paymentDate}</td>
+      <td>${r.method}</td>
+      <td>${money(totalBalance)}</td>
+      <td>
+        <div class="inline-actions">
+          <button class="btn btn-info" aria-label="Edit repayment" onclick="editRepayment(${i})">Edit</button>
+          <button class="btn btn-danger" aria-label="Delete repayment" onclick="deleteRepayment(${i})">Delete</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+let currentRepaymentEditIdx = null;
+
+repayForm.onsubmit = function(e) {
+  e.preventDefault();
+  // existing code to get values...
+  if (currentRepaymentEditIdx !== null) {
+    repayments[currentRepaymentEditIdx] = { staffID, memberName, amount, paymentDate: date, method };
+    log(`Edited repayment for: ${memberName} (${staffID})`);
+    currentRepaymentEditIdx = null;
+  } else {
+    repayments.push({ staffID, memberName, amount, paymentDate: date, method });
+    log(`Recorded repayment for: ${memberName} (${staffID})`);
+  }
+  save();
+  repayForm.reset();
+  updateUI();
+};
+
 
     function showMemberData(staffID) {
       const member = members.find(m => m.staff === staffID);
