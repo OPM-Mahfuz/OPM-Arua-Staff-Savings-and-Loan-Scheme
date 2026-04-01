@@ -209,6 +209,32 @@
     .darkMode input, .darkMode select { background: #0f172a; color: white; border-color: #334155; }
     .darkMode .metricCard { background: linear-gradient(135deg, #172033, #202b40); }
 
+
+    /* ===== MOBILE ===== */
+@media(max-width:768px){
+
+.hero{
+height:75vh;
+}
+
+.hero-content h1{
+font-size:28px;
+}
+
+.hero-content p{
+font-size:16px;
+}
+
+.header-container{
+flex-direction:column;
+text-align:center;
+}
+
+nav ul{
+justify-content:center;
+}
+
+}
     @media (max-width: 1100px) {
       .cards,
       .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -268,6 +294,7 @@
   </style>
 </head>
 <body>
+  <div class="header-container">
   <!-- Login Overlay -->
 <div id="loginOverlay" style="
   position: fixed;
@@ -775,7 +802,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <script>
     let members = JSON.parse(localStorage.getItem('members')) || [];
     let savings = JSON.parse(localStorage.getItem('savings')) || [];
