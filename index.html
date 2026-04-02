@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OPM ARUA SACCO PRO SYSTEM</title>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -213,6 +213,18 @@
     /* ===== MOBILE ===== */
 @media(max-width:768px){
 
+.hero{
+height:75vh;
+}
+
+.hero-content h1{
+font-size:28px;
+}
+
+.hero-content p{
+font-size:16px;
+}
+
 .header-container{
 flex-direction:column;
 text-align:center;
@@ -263,11 +275,10 @@ justify-content:center;
       th, td { padding: 10px; font-size: 0.9rem; }
     }
 
-@media (max-width: 768px){
-  #loginOverlay > div {
-    grid-template-columns: 1fr !important;
+@media (max-width: 640px) {
+  #loginOverlay {
+    padding: 14px !important;
   }
-
 
   #loginOverlay h1 {
     font-size: 1.7rem !important;
@@ -278,65 +289,11 @@ justify-content:center;
   }
 }
 
-button, .btn {
-  min-height: 44px;
-  font-size: 1rem;
-}
 
-input, select {
-  min-height: 44px;
-  font-size: 16px; /* prevents zoom on iPhone */
-}
-.table-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
 
-table {
-  min-width: 700px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-}
- .mobile-nav{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #003366;
-  display: none;
-  justify-content: space-around;
-  padding: 8px;
-  z-index: 999;
-}
-
-.mobile-nav button{
-  background: none;
-  color: white;
-  border: none;
-  font-size: 0.9rem;
-}
-
-@media(max-width:768px){
-  .mobile-nav{
-    display: flex;
-  }
-
-  .main{
-    padding-bottom: 70px;
-  }
-}
-body {
-  -webkit-tap-highlight-color: transparent;
-}
- </style>
-  <button onclick="toggleMenu()">☰ Menu</button>
+  </style>
 </head>
 <body>
-  <div class="header-container">
   <!-- Login Overlay -->
 <div id="loginOverlay" style="
   position: fixed;
@@ -654,12 +611,7 @@ body {
         <button class="member-only" onclick="showSection('memberPortal')">My Account</button>
         <button onclick="downloadStatement()">Download My Statement</button>
       </div>
-<div class="mobile-nav">
-  <button onclick="showSection('dashboard')">Home</button>
-  <button onclick="showSection('members')">Members</button>
-  <button onclick="showSection('savings')">Savings</button>
-  <button onclick="showSection('loans')">Loans</button>
-</div>
+
       <div class="main">
         <section id="dashboard" class="active">
           <h2>Dashboard</h2>
@@ -671,7 +623,7 @@ body {
           </div>
           <div id="notifications"></div>
           <div class="panel">
-            <canvas id="financeChart" style="width:100%; height:250px;"></canvas>
+            <canvas id="financeChart" style="max-width:100%; height:100px;"></canvas>
           </div>
         </section>
 
@@ -704,7 +656,6 @@ body {
           <div id="memberStatement"></div>
 
           <h3>Add / Register Member</h3>
-          <div class="form-row">
           <form id="memberForm" style="display:grid; grid-template-columns:1fr; gap:10px;">
             <input id="staff" placeholder="Staff ID / Member ID" required>
             <select id="gender" required><option value="">Gender</option><option>Male</option><option>Female</option></select>
@@ -737,10 +688,9 @@ body {
             </table>
           </div>
         </section>
-</div>
+
         <section id="savings">
           <h2>Savings</h2>
-          <div class="form-row">
           <form id="savingForm" style="display:grid; gap:10px;">
             <div style="display:flex; flex-wrap:wrap; gap:10px;">
               <input id="sMember" placeholder="Staff ID" required>
@@ -753,7 +703,6 @@ body {
             </div>
             <button type="submit" class="submit">Add Saving</button>
           </form>
-        
           <div class="panel" style="margin-top:16px;">
             <h3>Total Savings: <span id="totalSavings">0 UGX</span></h3>
             <p style="margin-top:8px; color:var(--muted);">Total Confirmed Savings: <span id="confirmedSavings">0 UGX</span></p>
@@ -765,7 +714,7 @@ body {
             </table>
           </div>
         </section>
-</div>
+
         <section id="dividends">
           <h2>Interests</h2>
           <div class="panel">
@@ -782,7 +731,6 @@ body {
 
         <section id="loans">
           <h2>Loans</h2>
-          <div class="form-row">
           <form id="loanForm" style="display:grid; gap:10px;">
             <div style="display:flex; flex-wrap:wrap; gap:10px;">
               <input id="loanMember" placeholder="Staff ID" required />
@@ -803,10 +751,9 @@ body {
             </table>
           </div>
         </section>
-</div>
+
         <section id="repayments">
           <h2>Loan Repayments</h2>
-          <div class="form-row">
           <form id="repayForm" style="display:grid; gap:10px;">
             <div style="display:flex; flex-wrap:wrap; gap:10px;">
               <input id="repayMember" placeholder="Staff ID" required />
@@ -823,7 +770,7 @@ body {
             </table>
           </div>
         </section>
-</div>
+
         <section id="reports" style="max-width:1200px; margin:auto;">
           <h2 style="text-align:center; margin-bottom:20px;">Dashboard & Reports</h2>
           <div class="panel">
@@ -854,7 +801,7 @@ body {
       </div>
     </div>
   </div>
-</div>
+
   <script>
     let members = JSON.parse(localStorage.getItem('members')) || [];
     let savings = JSON.parse(localStorage.getItem('savings')) || [];
@@ -1813,9 +1760,6 @@ repayForm.onsubmit = function(e) {
     passwordInput.type = "password";
     button.textContent = "Show";
   }
-}
-function toggleMenu(){
-  document.getElementById('sidebar').classList.toggle('open');
 }
   </script>
 </body>
