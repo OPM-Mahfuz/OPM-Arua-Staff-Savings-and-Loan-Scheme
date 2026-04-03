@@ -311,10 +311,7 @@
         padding: 14px;
         overflow-y: auto;
       }
-      /* Show sidebar when open (add class 'open' via JS) */
-      .sidebar.open { display: flex; }
-
-      /* Make header actions and buttons full width for easy tap targets */
+         /* Make header actions and buttons full width for easy tap targets */
       .header-actions { width: 100%; justify-content: center; }
       .header-actions button { flex: 1 1 100px; padding: 14px; font-size: 1rem; }
 
@@ -348,6 +345,30 @@
       margin-left: 250px;
       transition: margin-left 0.3s ease;
     }
+
+    /* Overlay background for sidebar on small screens */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 1200;
+}
+
+/* Show overlay when sidebar is open on small screens */
+@media(max-width: 900px){
+  .sidebar.open {
+    transform: translateX(0);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1300;
+  }
+  .sidebar-overlay.show {
+    display: block;
+  }
+}
     /* Additional tweaks for small screens if needed can go here */
 
   </style>
@@ -659,7 +680,7 @@
       
   <button onclick="toggleSidebar()">Menu</button>
     </header>
-
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="container">
       <div class="sidebar" id="sidebar">
         <button class="admin-only" onclick="showSection('dashboard')">Dashboard</button>
@@ -1824,19 +1845,21 @@ repayForm.onsubmit = function(e) {
   }
 }
 //toggle sidebar on small screens
- function toggleSidebar() {
-      const sidebar = document.querySelector('.sidebar');
-      const mainContent = document.querySelector('.main');
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
 
-      sidebar.classList.toggle('open');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
 
-      if (sidebar.classList.contains('open')) {
-        mainContent.classList.add('content-shift');
-      } else {
-        mainContent.classList.remove('content-shift');
-      }
-    }
-  
+function closeSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+}
   
 </script>
   </script>
