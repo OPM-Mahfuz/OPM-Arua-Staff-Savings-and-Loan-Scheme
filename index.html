@@ -343,7 +343,11 @@
       table { min-width: 640px; }
       th, td { padding: 10px; font-size: 0.9rem; }
     }
-
+  /* Shift content when sidebar is open (for mobile) */
+    .content-shift {
+      margin-left: 250px;
+      transition: margin-left 0.3s ease;
+    }
     /* Additional tweaks for small screens if needed can go here */
 
   </style>
@@ -1820,9 +1824,18 @@ repayForm.onsubmit = function(e) {
   }
 }
 //toggle sidebar on small screens
-  function toggleSidebar() {
-    document.querySelector('.sidebar').classList.toggle('open');
-  }
+ function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const mainContent = document.querySelector('.main');
+
+      sidebar.classList.toggle('open');
+
+      if (sidebar.classList.contains('open')) {
+        mainContent.classList.add('content-shift');
+      } else {
+        mainContent.classList.remove('content-shift');
+      }
+    }
   
   
 </script>
