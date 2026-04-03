@@ -369,6 +369,21 @@
     display: block;
   }
 }
+
+/* Container shifts when sidebar is open */
+body.sidebar-open .container {
+  margin-left: 250px; /* Push content to the right */
+}
+
+/* Remove overlay styles for small screens (optional) */
+@media(max-width:900px){
+  /* No overlay styles needed now */
+}
+
+/* Optional: Keep sidebar fixed or static */
+.sidebar {
+  /* Keep width fixed */
+}
     /* Additional tweaks for small screens if needed can go here */
 
   </style>
@@ -680,7 +695,7 @@
       
   <button onclick="toggleSidebar()">Menu</button>
     </header>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
     <div class="container">
       <div class="sidebar" id="sidebar">
         <button class="admin-only" onclick="showSection('dashboard')">Dashboard</button>
@@ -1846,11 +1861,7 @@ repayForm.onsubmit = function(e) {
 }
 //toggle sidebar on small screens
 function toggleSidebar() {
-  const sidebar = document.querySelector('.sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('show');
+  document.body.classList.toggle('sidebar-open');
 }
 
 function closeSidebar() {
